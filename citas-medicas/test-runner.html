@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical App - Test Suite (TDD)</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --danger: #ef4444;
+            --danger-bg: #451a1a;
+            --success: #22c55e;
+            --success-bg: #14532d;
+            --border: #334155;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .test-container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin: 0 0 0.5rem 0;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(to right, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .test-card {
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .test-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge.failed {
+            background-color: var(--danger-bg);
+            color: #fca5a5;
+            border: 1px solid #ef4444;
+        }
+
+        .badge.success {
+            background-color: var(--success-bg);
+            color: #86efac;
+            border: 1px solid #22c55e;
+        }
+
+        .error-box {
+            background-color: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid var(--danger);
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: #fca5a5;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .summary {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .indicator.failed { background-color: var(--danger); }
+        .indicator.success { background-color: var(--success); }
+    </style>
+</head>
+<body>
+
+    <div class="test-container">
+        <div class="header">
+            <h1>Medical App - Suite de Pruebas Unitarias (TDD)</h1>
+            <p>Estado del desarrollo guiado por pruebas para el registro de pacientes.</p>
+        </div>
+
+        <div id="tests-list">
+            <!-- Los resultados de las pruebas se inyectarán aquí -->
+        </div>
+
+        <div class="summary">
+            <div class="summary-item">
+                <div class="indicator success"></div>
+                <span>Pasadas: <strong id="passed-count">0</strong></span>
+            </div>
+            <div class="summary-item">
+                <div class="indicator failed"></div>
+                <span>Falladas: <strong id="failed-count">0</strong></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carga del código de producción (actualmente inexistente) -->
+    <!-- <script src="app.js"></script> -->
+
+    <script>
+        // --- SUITE DE PRUEBAS ---
+
+        const tests = [
+            {
+                name: "RF-02: Registrar un paciente correctamente",
+                run: function() {
+                    // Arrange
+                    const paciente = {
+                        nombre: "Juan Pérez",
+                        edad: 30
+                    };
+
+                    // Act
+                    const resultado = registrarPaciente(paciente);
+
+                    // Assert
+                    if (resultado !== true) {
+                        throw new Error("Assert Failed: El resultado del registro debe ser true.");
+                    }
+                }
+            }
+        ];
+
+        // --- RUNNER DE PRUEBAS ---
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const listContainer = document.getElementById("tests-list");
+            let passed = 0;
+            let failed = 0;
+
+            tests.forEach(test => {
+                const card = document.createElement("div");
+                card.className = "test-card";
+
+                let statusBadge = "";
+                let errorDetails = "";
+
+                try {
+                    // Ejecutamos la prueba
+                    test.run();
+                    passed++;
+                    statusBadge = `<span class="badge success">PASÓ</span>`;
+                } catch (error) {
+                    failed++;
+                    statusBadge = `<span class="badge failed">FALLÓ</span>`;
+                    errorDetails = `
+                        <div class="error-box">
+                            <strong>${error.name}:</strong> ${error.message}
+                            \n\nUbicación del error:
+                            ${error.stack ? error.stack.split('\n')[1] || '' : 'No disponible'}
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="test-title">
+                        <span>${test.name}</span>
+                        ${statusBadge}
+                    </div>
+                    ${errorDetails}
+                `;
+
+                listContainer.appendChild(card);
+            });
+
+            document.getElementById("passed-count").textContent = passed;
+            document.getElementById("failed-count").textContent = failed;
+        });
+    </script>
+</body>
+</html>
