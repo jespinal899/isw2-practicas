@@ -1,4 +1,4 @@
-const { p } = require("./enfermo");
+const { calcularTotal } = require("./enfermo");
 
 function assertEquals(actual, expected, message) {
     if (actual !== expected) {
@@ -20,14 +20,14 @@ function test(nombre, fn) {
 
 test("carrito vacío retorna 0", () => {
     assertEquals(
-        p([], "EFECTIVO", false, false),
+        calcularTotal([], "EFECTIVO", false, false),
         0,
         "Debe retornar cero"
     );
 });
 
 test("descuento por producto caro", () => {
-    const resultado = p(
+    const resultado = calcularTotal(
         [{ precio: 2000, cantidad: 1, categoria: "otros" }],
         "TARJETA",
         false,
@@ -38,7 +38,7 @@ test("descuento por producto caro", () => {
 });
 
 test("descuento VIP", () => {
-    const resultado = p(
+    const resultado = calcularTotal(
         [{ precio: 100, cantidad: 1, categoria: "otros" }],
         "TARJETA",
         true,

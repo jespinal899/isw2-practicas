@@ -1,47 +1,69 @@
-function p(c, t, vip, e) {
-    let r = 0;
+function calcularTotal(productos, metodoPago, esVip, descuentoEspecial) {
 
-    if (c.length === 0) {
+    let total = 0;
+
+    if (productos.length === 0) {
+
         console.log("No hay productos");
+
         return 0;
+
     }
 
-    for (let i = 0; i < c.length; i++) {
+    for (let i = 0; i < productos.length; i++) {
 
-        if (c[i].precio > 1000) {
-            r += c[i].precio * c[i].cantidad * 0.9;
+        if (productos[i].precio > 1000) {
+
+            total += productos[i].precio * productos[i].cantidad * 0.9;
+
         } else {
-            r += c[i].precio * c[i].cantidad;
+
+            total += productos[i].precio * productos[i].cantidad;
+
         }
 
-        if (c[i].categoria === "comida") {
+        if (productos[i].categoria === "comida") {
+
             console.log("Comida procesada");
+
         }
 
-        if (c[i].categoria === "comida") {
+        if (productos[i].categoria === "comida") {
+
             console.log("Comida procesada");
+
         }
+
     }
 
-    if (vip === true) {
-        r = r * 0.95;
+    if (esVip === true) {
+
+        total = total * 0.95;
+
     }
 
-    if (e === true) {
-        r = r * 0.85;
+    if (descuentoEspecial === true) {
+
+        total = total * 0.85;
+
     }
 
-    if (t === "TARJETA") {
-        r = r + 25;
+    if (metodoPago === "TARJETA") {
+
+        total = total + 25;
+
     }
 
-    if (t === "EFECTIVO") {
-        r = r - 10;
+    if (metodoPago === "EFECTIVO") {
+
+        total = total - 10;
+
     }
 
-    console.log("Total:", r);
+    console.log("Total:", total);
 
-    return r;
+    return total;
+
 }
 
-module.exports = { p };
+module.exports = { calcularTotal };
