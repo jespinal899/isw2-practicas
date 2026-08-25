@@ -1,4 +1,3 @@
-
 const DESCUENTO_PRODUCTO_CARO = 0.9;
 const DESCUENTO_VIP = 0.95;
 const DESCUENTO_ESPECIAL = 0.85;
@@ -6,24 +5,40 @@ const CARGO_TARJETA = 25;
 const DESCUENTO_EFECTIVO = 10;
 const LIMITE_PRODUCTO_CARO = 1000;
 
+function calcularSubtotalProducto(producto) {
+    const subtotal = producto.precio * producto.cantidad;
+
+    if (producto.precio > LIMITE_PRODUCTO_CARO) {
+        return subtotal * DESCUENTO_PRODUCTO_CARO;
+    }
+
+    return subtotal;
+}
+
+function aplicarMetodoPago(total, metodoPago) {
+    if (metodoPago === "TARJETA") {
+        return total + CARGO_TARJETA;
+    }
+
+    if (metodoPago === "EFECTIVO") {
+        return total - DESCUENTO_EFECTIVO;
+    }
+
+    return total;
+}
+
 function calcularTotal(productos, metodoPago, esVip, descuentoEspecial) {
 
-    let total = 0;
-
-    if (productos.length === 0) {
+    if (!productos.length) {
         console.log("No hay productos");
         return 0;
     }
 
+    let total = 0;
+
     for (let i = 0; i < productos.length; i++) {
 
-        if (productos[i].precio > LIMITE_PRODUCTO_CARO) {
-            total += productos[i].precio *
-                productos[i].cantidad *
-                DESCUENTO_PRODUCTO_CARO;
-        } else {
-            total += productos[i].precio * productos[i].cantidad;
-        }
+        total += calcularSubtotalProducto(productos[i]);
 
         if (productos[i].categoria === "comida") {
             console.log("Comida procesada");
@@ -42,17 +57,15 @@ function calcularTotal(productos, metodoPago, esVip, descuentoEspecial) {
         total = total * DESCUENTO_ESPECIAL;
     }
 
-    if (metodoPago === "TARJETA") {
-        total = total + CARGO_TARJETA;
-    }
-
-    if (metodoPago === "EFECTIVO") {
-        total = total - DESCUENTO_EFECTIVO;
-    }
+    total = aplicarMetodoPago(total, metodoPago);
 
     console.log("Total:", total);
 
     return total;
 }
 
-module.exports = { calcularTotal };
+module.exports = {
+    calcularTotal,
+    calcularSubtotalProducto,
+    aplicarMetodoPago
+};

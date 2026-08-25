@@ -11,9 +11,9 @@ function assertEquals(actual, expected, message) {
 function test(nombre, fn) {
     try {
         fn();
-        console.log(` ${nombre}`);
+        console.log(`✅ ${nombre}`);
     } catch (error) {
-        console.error(` ${nombre}`);
+        console.error(`❌ ${nombre}`);
         console.error(error.message);
     }
 }
